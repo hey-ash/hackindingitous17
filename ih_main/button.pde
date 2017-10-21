@@ -7,6 +7,7 @@
 
 class Button {
   color buttonColor; //button's color
+  color buttonHover; //button's hover color
   float buttonX; //button's x position
   float buttonY; //button's y position
   float buttonWidth; //button's width
@@ -16,8 +17,9 @@ class Button {
   boolean visible = false; //boolean to check if button is displayed on screen
   
   //constructor for button class
-  Button(color bC, float bX, float bY, float bW, float bH, String bT) {
+  Button(color bC, color bHe, float bX, float bY, float bW, float bH, String bT) {
     buttonColor = bC;
+    buttonHover = bHe;
     buttonX = bX;
     buttonY = bY;
     buttonWidth = bW;
@@ -29,8 +31,8 @@ class Button {
   void update() {
     isOver();
     rectMode(CENTER); //set rectMode to center
-    if (buttonOver) { //if mouse is over button make it black
-      fill(200);
+    if (buttonOver) { //if mouse is over button make it grey
+      fill(buttonHover);
     }
     else {
       fill(buttonColor); //if mouse is not over button use specified color
