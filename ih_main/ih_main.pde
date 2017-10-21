@@ -10,7 +10,7 @@ final int feed_screen = 4; //screen for viewing friend feed
 int state = home_screen; //set beginning state to home screen
 
 //color array
-public color[] colorArray = {color(53,179,72), color(20,20,20)}
+public color[] colorArray = {color(53,179,72), color(100,20,20)};
 //key = [0]background, [1]button background
 
 //buttons
@@ -52,6 +52,13 @@ void draw() {
 //method for home screen
 void showHome() {
   background(colorArray[0]);  
+  write.changeVisibility(true);
+  view.changeVisibility(true);
+  feed.changeVisibility(true);
+  
+  write.update();
+  view.update();
+  feed.update();
 }
 
 //method for note screen
