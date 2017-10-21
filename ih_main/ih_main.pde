@@ -8,6 +8,9 @@ PImage logo;
 PFont dense;
 int font_size = 48;
 
+User P1; 
+Textfield dailynote;
+String st="";
 
 //setup for screens
 final int home_screen = 0; //home screen
@@ -18,7 +21,7 @@ final int feed_screen = 4; //screen for viewing friend feed
 int state = home_screen; //set beginning state to home screen
 
 //color array
-public color[] colorArray = {color(201,235,227), color(53,168,186)};
+public color[] colorArray = {color(201, 235, 227), color(53, 168, 186)};
 //key = [0]background, [1]button background
 
 //buttons
@@ -30,35 +33,36 @@ Button save; //button to save the note
 
 void setup() {
   size(431, 767); //actual iPhone screen size scaled by 1.15x
-  
+
   write = new Button(colorArray[1], width/2, height/6 * 3, 200, 70, "WRITE A MEMO");
   view = new Button(colorArray[1], width/2, height/6 * 4, 200, 70, "VIEW MY MEMOS");
   feed = new Button(colorArray[1], width/2, height/6 * 5, 200, 70, "SEE MY FEED");
   home = new Button(colorArray[1], width/5 * 1.5, height/6 * 5.5, 110, 30, "HOME");
   save = new Button(colorArray[1], width/5 * 3.5, height/6 * 5.5, 110, 30, "SAVE MEMO");
-  
+
   logo = loadImage("mems.png");
   dense = createFont("Dense-Regular.otf", 48);
   textFont(dense, font_size);
+
+  P1 = new User();
 }
 
 void draw() {
   //handle screens
   switch (state) {
-    case home_screen:
-      showHome(); //show logo screen at the start
-      break;
-    case note_screen:
-      showNote(); //show note screen
-      break;
-    case meme_screen:
-      showMeme(); //show meme screen after note has been saved
-    case view_screen: 
-      showView(); //show view screen of all notes
-    case feed_screen:
-      showFeed(); //show feed screen of friends
+  case home_screen:
+    showHome(); //show logo screen at the start
+    break;
+  case note_screen:
+    showNote(); //show note screen
+    break;
+  case meme_screen:
+    showMeme(); //show meme screen after note has been saved
+  case view_screen: 
+    showView(); //show view screen of all notes
+  case feed_screen:
+    showFeed(); //show feed screen of friends
   }
-  
 }
 
 //method for home screen, CHANGES IMAGE MODE TO CENTER
@@ -68,9 +72,9 @@ void showHome() {
   view.changeVisibility(true);
   feed.changeVisibility(true);
   imageMode(CENTER);
-  logo.resize(550,0);
+  logo.resize(550, 0);
   image(logo, width/2 - 10, height/5 + 30);
-  
+
   write.update();
   view.update();
   feed.update();
@@ -78,49 +82,66 @@ void showHome() {
 
 //method for note screen
 void showNote() {
-  background(colorArray[0]);  
-  
+  background(colorArray[0]);
+  fill(0);
+  text(P1.getDate(), 20, 40);
   home.changeVisibility(true);
   save.changeVisibility(true);
   home.update();
   save.update();
- 
+  fill(0);
+  textAlign(LEFT);
+  text(st, 20, 80);
 }
 
 //method for meme screen
 void showMeme() {
   background(colorArray[0]);  
-  
+
   home.changeVisibility(true);
   home.update();
 }
 
 //method for view screen
 void showView() {
-  background(colorArray[0]);  
+  background(colorArray[0]);
 }
 
 //method for feed screen
 void showFeed() {
-  background(colorArray[0]);  
+  background(colorArray[0]);
 }
 
+void keyPressed() {
+  if (keyCode == ENTER) {
+      st =st +"\n";
+    }
+  else if (keyCode == BACKSPACE) {
+    if (st.length()==0) {
+    } else {
+      st = st.substring( 0, st.length()-1 );
+    } 
+  } else {
+    st= st+key;
+  }
+  redraw();
+}
 
 //method for button functions
 void mousePressed() {
-  if (write.isOver()){
-    state = note_screen;  
+  if (write.isOver()) {
+    state = note_screen;
   }
-  if (view.isOver()){
+  if (view.isOver()) {
     state = view_screen;
   }
-  if (feed.isOver()){
-    state = feed_screen;  
+  if (feed.isOver()) {
+    state = feed_screen;
   }
   if (home.isOver()) {
-    state = home_screen;  
+    state = home_screen;
   }
   if (save.isOver()) {
-    state = meme_screen;  
+    state = meme_screen;
   }
 }
