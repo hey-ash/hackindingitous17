@@ -2,6 +2,7 @@
 //note: sets rectMode to CENTER
 //note: sets textAlign to CENTER, CENTER
 //note: sets textSize to 14
+//note: rectangles are rounded!
 //NOTE THIS BUTTON CLASS HAS BEEN EDITED TO FIT THE APP SPECIFICALLY
 
 class Button {
@@ -35,15 +36,15 @@ class Button {
       fill(buttonColor); //if mouse is not over button use specified color
     }
     noStroke();
-    rect(buttonX, buttonY, buttonWidth, buttonHeight); //draw rectangular button
-    if (buttonOver) { //if mouse is over button text is white
-      fill(colorArray[0]);
+    rect(buttonX, buttonY, buttonWidth, buttonHeight, 10); //draw rectangular button + ROUNDED CORNERS
+    if (buttonOver) { //if mouse is over button text is button color
+      fill(colorArray[1]);
     }
     else {
-      fill(255); //if mouse is not over button text is black
+      fill(colorArray[0]); //if mouse is not over button text is background color
     }
     textAlign(CENTER, CENTER); //align text to display center, center
-    textSize(20); //text size is 14
+    textSize(36);
     text(buttonText, buttonX, buttonY); //position text in the center of button
   }
  
