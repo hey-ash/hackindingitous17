@@ -12,6 +12,7 @@ PImage back_icon;
 int icon_size = 40;
 String tMeme;
 PImage currentMeme;
+PImage forward_icon;
 
 //set font
 PFont dense;
@@ -169,6 +170,7 @@ final int note_screen = 1; //screen for saving notes
 final int meme_screen = 2; //screen for seeing the meme of the day
 final int view_screen = 3; //screen for viewing past notes
 final int feed_screen = 4; //screen for viewing friend feed
+final int view_screen2 = 5; //second screen for viewing pastnotes
 int state = home_screen; //set beginning state to home screen
 
 //color array
@@ -183,6 +185,8 @@ Button home; //button to go home
 Button save; //button to save the note
 Button back; //button to go back to note page
 Button home_centered; //button to go back to home page but it is centered
+Button back_scroll; //button to scroll back
+Button forward_scroll; //button to scroll forward
 
 
 //User input stuff
@@ -203,11 +207,14 @@ void setup() {
   save = new Button(colorArray[2], colorArray[2], width/5 * 3.7, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
   back = new Button(colorArray[2], colorArray[2], width/5 * 3.7, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
   home_centered = new Button(colorArray[2], colorArray[2], width/2, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
+  back_scroll = new Button(colorArray[2], colorArray[2], width/5 * 1.3, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
+  forward_scroll = new Button(colorArray[2], colorArray[2], width/5 * 3.7, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
   
   logo = loadImage("mems.png");
   home_icon = loadImage("home.png");
   save_icon = loadImage("save.png");
   back_icon = loadImage("back.png");
+  forward_icon = loadImage("forward.png");
   dense = createFont("Dense-Regular.otf", 48);
   textFont(dense, font_size);
   
@@ -231,6 +238,9 @@ void draw() {
       break;
     case feed_screen:
       showFeed(); //show feed screen of friends
+      break;
+    case view_screen2:
+      showView2();
       break;
   }
   
@@ -262,6 +272,8 @@ void showHome() {
   write.changeVisibility(true);
   back.changeVisibility(false);
   home_centered.changeVisibility(false);
+  back_scroll.changeVisibility(false);
+  forward_scroll.changeVisibility(false);
   
   view.changeVisibility(true);
   feed.changeVisibility(true);
@@ -284,6 +296,8 @@ void showNote() {
   feed.changeVisibility(false);
   back.changeVisibility(false);
   home_centered.changeVisibility(false);
+  back_scroll.changeVisibility(false);
+  forward_scroll.changeVisibility(false);
   
   home.changeVisibility(true);
   save.changeVisibility(true);
@@ -298,7 +312,8 @@ void showNote() {
   
   fill(colorArray[1]);
   textAlign(LEFT);
-  text(P1.getDate(), 20, 60);
+  textSize(60);
+  text(P1.getDate(), 25, 80);
   home.changeVisibility(true);
   save.changeVisibility(true);
   home.update();
@@ -345,6 +360,8 @@ void showMeme() {
   feed.changeVisibility(false);
   save.changeVisibility(false);
   home_centered.changeVisibility(false);
+  back_scroll.changeVisibility(false);
+  forward_scroll.changeVisibility(false);
   
   
   currentMeme = loadImage(tMeme);
@@ -358,7 +375,7 @@ void showMeme() {
   image(home_icon, width/5 * 1.3, height/6 * 5.65);
   image(back_icon, width/5 * 3.7, height/6 * 5.65);
   
-  fill(0);
+  fill(colorArray[1]);
   textAlign(CENTER);
   textSize(60);
   text("Bless up!", width/2, height/2 - 250);
@@ -379,19 +396,128 @@ void showView() {
   back.changeVisibility(false);
   home.changeVisibility(false);
   
+  back_scroll.changeVisibility(true);
+  forward_scroll.changeVisibility(true);
+  back_scroll.update();
+  forward_scroll.update();
+  back_icon.resize(icon_size,0);
+  forward_icon.resize(icon_size,0);
+  image(back_icon, width/5 * 1.3, height/6 * 5.65);
+  image(forward_icon, width/5 * 3.7, height/6 * 5.65);
+  
+  
   home_centered.changeVisibility(true);
   home_icon.resize(icon_size,0);
   image(home_icon, width/2, height/6 * 5.65);
   
-  textAlign(LEFT);
-  textSize(40);
+  textAlign(CENTER);
+  textSize(150);
   fill(colorArray[1]);
-  text("10/20/2017", 20, 60);
+  text("4", width/2, height/2 - 190);
+  textSize(80);
+  fill(0);
+  text("MEMOS", width/2, height/2 - 100);
   
   
+  textAlign(LEFT);
+  textSize(35);
+  fill(colorArray[1]);
+  text("10/20/2017", 30, height/2);
+  noStroke();
+  fill(255);
+  rect(width/2, height/2 + 70, width - 60, 100, 10);
+  textAlign(LEFT);
+  textSize(25);
+  fill(0);
+  text("My friday was great! I got at least 7 hours of sleep, the", 40, height/2 + 50);
+  text("best I've had in awhile! I was well-rested and ready to face", 40, height/2 + 80);
+  text("the day.", 40, height/2 + 110);
+  
+  textAlign(LEFT);
+  textSize(35);
+  fill(colorArray[1]);
+  text("10/19/2017", 30, height/2 + 160);
+  noStroke();
+  fill(255);
+  rect(width/2, height/2 + 230, width - 60, 100, 10);
+  textAlign(LEFT);
+  textSize(25);
+  fill(0);
+  text("Today was a good day. Even though I had an exam, I was", 40, height/2 + 210);
+  text("sort of prepared and wasn't too destroyed by the questions.", 40, height/2 + 240);
+  text("Hopefully I end up doing ok.", 40, height/2 + 270);
   
   home.update();
 }
+
+
+//method for second view screen
+void showView2() {
+  background(colorArray[0]); 
+  canType = false;
+  write.changeVisibility(false);
+  view.changeVisibility(false);
+  feed.changeVisibility(false);
+  save.changeVisibility(false);
+  back.changeVisibility(false);
+  home.changeVisibility(false);
+  
+  back_scroll.changeVisibility(true);
+  forward_scroll.changeVisibility(true);
+  back_scroll.update();
+  forward_scroll.update();
+  back_icon.resize(icon_size,0);
+  forward_icon.resize(icon_size,0);
+  image(back_icon, width/5 * 1.3, height/6 * 5.65);
+  image(forward_icon, width/5 * 3.7, height/6 * 5.65);
+  
+  
+  home_centered.changeVisibility(true);
+  home_icon.resize(icon_size,0);
+  image(home_icon, width/2, height/6 * 5.65);
+  
+  textAlign(CENTER);
+  textSize(150);
+  fill(colorArray[1]);
+  text("4", width/2, height/2 - 190);
+  textSize(80);
+  fill(0);
+  text("MEMOS", width/2, height/2 - 100);
+  
+  
+  textAlign(LEFT);
+  textSize(35);
+  fill(colorArray[1]);
+  text("10/18/2017", 30, height/2);
+  noStroke();
+  fill(255);
+  rect(width/2, height/2 + 70, width - 60, 100, 10);
+  textAlign(LEFT);
+  textSize(25);
+  fill(0);
+  text("Day started out kinda rough, but thankfully improved.", 40, height/2 + 50);
+  text("Really appreciate my friends for their help today and", 40, height/2 + 80);
+  text("for cheering me up :)", 40, height/2 + 110);
+  
+  textAlign(LEFT);
+  textSize(35);
+  fill(colorArray[1]);
+  text("10/10/2017", 30, height/2 + 160);
+  noStroke();
+  fill(255);
+  rect(width/2, height/2 + 230, width - 60, 100, 10);
+  textAlign(LEFT);
+  textSize(25);
+  fill(0);
+  text("Starting out this Mems thing. It seems pretty cool tbh.", 40, height/2 + 210);
+  text("Blessed to have access to technology and ability to", 40, height/2 + 240);
+  text("do neat things like this!", 40, height/2 + 270);
+  
+  home.update();
+  
+}
+
+
 
 //method for feed screen
 void showFeed() {
@@ -436,6 +562,12 @@ void mousePressed() {
   }
   if (home_centered.isOver()) {
     state = home_screen;
+  }
+  if (back_scroll.isOver()) {
+    state = view_screen;
+  }
+  if (forward_scroll.isOver()) {
+    state = view_screen2;
   }
 }
 
