@@ -13,6 +13,10 @@ int icon_size = 40;
 String tMeme;
 PImage currentMeme;
 PImage forward_icon;
+PImage alex1;
+PImage emily1;
+PImage omar1;
+PImage ashley1;
 
 //set font
 PFont dense;
@@ -171,6 +175,7 @@ final int meme_screen = 2; //screen for seeing the meme of the day
 final int view_screen = 3; //screen for viewing past notes
 final int feed_screen = 4; //screen for viewing friend feed
 final int view_screen2 = 5; //second screen for viewing pastnotes
+final int feed_screen2 = 6; //second screen for viewng past friend feeds
 int state = home_screen; //set beginning state to home screen
 
 //color array
@@ -187,6 +192,8 @@ Button back; //button to go back to note page
 Button home_centered; //button to go back to home page but it is centered
 Button back_scroll; //button to scroll back
 Button forward_scroll; //button to scroll forward
+Button back_scroll_feed;
+Button forward_scroll_feed;
 
 
 //User input stuff
@@ -209,16 +216,24 @@ void setup() {
   home_centered = new Button(colorArray[2], colorArray[2], width/2, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
   back_scroll = new Button(colorArray[2], colorArray[2], width/5 * 1.3, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
   forward_scroll = new Button(colorArray[2], colorArray[2], width/5 * 3.7, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
+  back_scroll_feed = new Button(colorArray[2], colorArray[2], width/5 * 1.3, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
+  forward_scroll_feed = new Button(colorArray[2], colorArray[2], width/5 * 3.7, height/6 * 5.65, icon_size + 5, icon_size + 5, "");
   
   logo = loadImage("mems.png");
   home_icon = loadImage("home.png");
   save_icon = loadImage("save.png");
   back_icon = loadImage("back.png");
   forward_icon = loadImage("forward.png");
+  
   dense = createFont("Dense-Regular.otf", 48);
   textFont(dense, font_size);
   
   P1 = new User();
+  
+  alex1 = loadImage("29.jpeg");
+  emily1 = loadImage("20.jpeg");
+  omar1 = loadImage("12.jpeg");
+  ashley1 = loadImage("15.jpeg");
 }
 
 void draw() {
@@ -241,6 +256,9 @@ void draw() {
       break;
     case view_screen2:
       showView2();
+      break;
+    case feed_screen2:
+      showFeed2();
       break;
   }
   
@@ -274,6 +292,8 @@ void showHome() {
   home_centered.changeVisibility(false);
   back_scroll.changeVisibility(false);
   forward_scroll.changeVisibility(false);
+  back_scroll_feed.changeVisibility(false);
+  forward_scroll_feed.changeVisibility(false);
   
   view.changeVisibility(true);
   feed.changeVisibility(true);
@@ -298,6 +318,8 @@ void showNote() {
   home_centered.changeVisibility(false);
   back_scroll.changeVisibility(false);
   forward_scroll.changeVisibility(false);
+  back_scroll_feed.changeVisibility(false);
+  forward_scroll_feed.changeVisibility(false);
   
   home.changeVisibility(true);
   save.changeVisibility(true);
@@ -318,32 +340,10 @@ void showNote() {
   save.changeVisibility(true);
   home.update();
   save.update();
-  if (canType == true) {
-    fill(0);
-    textAlign(LEFT);
-    text(st, 35, 160);
-  }
   
-  /*display text in text box
-  if(canType == true){
-    int numLine = 1;
-    if (keyPressed == true){
-      tempSt += 
-      
-        while(textWidth(tempSt) < width-100) { //ensure words will not exceed canvas width
-           
-           if(textWidth(tempSt) < width) { //ensure a long line will not exceed canvas width
-              line.append(tempSt); //add st to line to be displayed
-              
-           }
-           else break;
-         }
-         
-     }
-    for(int n = 1; n <= numLine; n++){
-      text(line.get(n-1), 35*n, 160);
-    }
-  }*/
+  fill(0);
+  textAlign(LEFT);
+  printClean(st);
   
   home.update();
   save.update();
@@ -362,10 +362,13 @@ void showMeme() {
   home_centered.changeVisibility(false);
   back_scroll.changeVisibility(false);
   forward_scroll.changeVisibility(false);
+  back_scroll_feed.changeVisibility(false);
+  forward_scroll_feed.changeVisibility(false);
   
   
   currentMeme = loadImage(tMeme);
-  currentMeme.resize(400,0);
+  currentMeme.resize(width*2/5,0);
+  currentMeme.resize(0, height*2/5);
   image(currentMeme, width/2, height/2 + 20);
   
   back.changeVisibility(true);
@@ -395,6 +398,8 @@ void showView() {
   save.changeVisibility(false);
   back.changeVisibility(false);
   home.changeVisibility(false);
+  back_scroll_feed.changeVisibility(false);
+  forward_scroll_feed.changeVisibility(false);
   
   back_scroll.changeVisibility(true);
   forward_scroll.changeVisibility(true);
@@ -461,6 +466,8 @@ void showView2() {
   save.changeVisibility(false);
   back.changeVisibility(false);
   home.changeVisibility(false);
+  back_scroll_feed.changeVisibility(false);
+  forward_scroll_feed.changeVisibility(false);
   
   back_scroll.changeVisibility(true);
   forward_scroll.changeVisibility(true);
@@ -529,12 +536,105 @@ void showFeed() {
   save.changeVisibility(false);
   back.changeVisibility(false);
   home.changeVisibility(false);
+  back_scroll.changeVisibility(false);
+  forward_scroll.changeVisibility(false);
+  
+  back_scroll_feed.changeVisibility(true);
+  forward_scroll_feed.changeVisibility(true);
+  back_icon.resize(icon_size,0);
+  forward_icon.resize(icon_size,0);
+  image(back_icon, width/5 * 1.3, height/6 * 5.65);
+  image(forward_icon, width/5 * 3.7, height/6 * 5.65);
   
   home_centered.changeVisibility(true);
   home_icon.resize(icon_size,0);
   image(home_icon, width/2, height/6 * 5.65);
   
+  
+  textAlign(CENTER);
+  textSize(80);
+  fill(colorArray[1]);
+  text("FRIEND FEED", width/2, height/2 - 280);
+  
+  noStroke();
+  fill(255);
+  rect(width/2, height/2 - 100, width - 60, 225, 10);
+  textAlign(LEFT);
+  textSize(35);
+  fill(colorArray[1]);
+  text("ALEX'S  MEME  ON  10/18/2017", 50, height/2 - 180);
+  alex1.resize(200,0);
+  image(alex1, width/2, height/2 - 80);
+  
+  noStroke();
+  fill(255);
+  rect(width/2, height/2 + 175, width - 60, 225, 10);
+  textAlign(LEFT);
+  textSize(35);
+  fill(colorArray[1]);
+  text("EMILY'S  MEME  ON  10/18/2017", 50, height/2 + 95);
+  emily1.resize(200,0);
+  image(emily1, width/2, height/2 + 195);
+  
   home.update();
+  back_scroll_feed.update();
+  forward_scroll_feed.update();
+}
+
+//method for second feed screen
+void showFeed2() {
+  background(colorArray[0]); 
+  canType = false;
+  write.changeVisibility(false);
+  view.changeVisibility(false);
+  feed.changeVisibility(false);
+  save.changeVisibility(false);
+  back.changeVisibility(false);
+  home.changeVisibility(false);
+  back_scroll.changeVisibility(false);
+  forward_scroll.changeVisibility(false);
+  
+  back_scroll_feed.changeVisibility(true);
+  forward_scroll_feed.changeVisibility(true);
+  back_icon.resize(icon_size,0);
+  forward_icon.resize(icon_size,0);
+  image(back_icon, width/5 * 1.3, height/6 * 5.65);
+  image(forward_icon, width/5 * 3.7, height/6 * 5.65);
+  
+  home_centered.changeVisibility(true);
+  home_icon.resize(icon_size,0);
+  image(home_icon, width/2, height/6 * 5.65);
+  
+  
+  textAlign(CENTER);
+  textSize(80);
+  fill(colorArray[1]);
+  text("FRIEND FEED", width/2, height/2 - 280);
+  
+  noStroke();
+  fill(255);
+  rect(width/2, height/2 - 100, width - 60, 225, 10);
+  textAlign(LEFT);
+  textSize(35);
+  fill(colorArray[1]);
+  text("OMAR'S  MEME  ON  10/18/2017", 50, height/2 - 180);
+  omar1.resize(170,0);
+  image(omar1, width/2, height/2 - 80);
+  
+  noStroke();
+  fill(255);
+  rect(width/2, height/2 + 175, width - 60, 225, 10);
+  textAlign(LEFT);
+  textSize(35);
+  fill(colorArray[1]);
+  text("ASHLEY'S  MEME  ON  10/17/2017", 50, height/2 + 95);
+  ashley1.resize(170,0);
+  image(ashley1, width/2, height/2 + 195);
+  
+  home.update();
+  back_scroll_feed.update();
+  forward_scroll_feed.update();
+  
 }
 
 
@@ -568,6 +668,41 @@ void mousePressed() {
   }
   if (forward_scroll.isOver()) {
     state = view_screen2;
+  }
+  if (back_scroll_feed.isOver()) {
+    state = feed_screen;
+  }
+  if (forward_scroll_feed.isOver()) {
+    state = feed_screen2;
+  }
+}
+
+//TextWrap
+void printClean(String s) {
+  //TextWrap
+  String holder ="";
+  int w = 0;    // Accumulate width of chars
+  int i = 0;      // Count through chars
+  int rememberSpace = 0; // Remember where the last space was
+  String[] allLines = {};
+  String sub = "";
+  int y = 160;
+  // As long as we are not at the end of the String
+  while (w < s.length()) {
+    // Current char
+    sub=sub+s.charAt(i);
+    if (i == 35) {//reach end of line?
+      holder = s.substring(rememberSpace, s.length()); // Make a substring
+      allLines = append(allLines, holder);
+      i = 0;
+      holder = "";
+      y = y + 30;
+      rememberSpace = w;
+    } else {
+      i++;
+      w++;
+    }
+    text(s.substring(rememberSpace, w), 45, y);
   }
 }
 
